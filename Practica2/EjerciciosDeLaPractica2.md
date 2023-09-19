@@ -1,4 +1,6 @@
-Ejercicio 1)
+# Práctica 2 - Semáforos
+
+##Ejercicio 1
 
 Existen N personas que deben ser chequeadas por un detector de metales antes de poder
 ingresar al avión.
@@ -10,9 +12,9 @@ resolver el problema.
 b. Implemente una solución que modele el acceso de las personas a un detector (es decir,
 si el detector está libre la persona lo puede utilizar; en caso contrario, debe esperar).
 
-c. Modifique su solución para el caso que haya tres detectores. 
+c. Modifique su solución para el caso que haya tres detectores.
 
-
+```c
 a) y b)
 
 sem Libre = 1;
@@ -23,11 +25,12 @@ Processs Persona [0..N]
 	P(Libre)
 	//usa detector
 	V(Libre)
-	
+
 }
+```
 
+```c
 c)
-
 sem Libre = 3;
 Processs Persona [0..N]
 {
@@ -35,11 +38,12 @@ Processs Persona [0..N]
 	P(Libre)
 	//usa detector
 	V(Libre)
-	
+
 }
 
+```
 
-Ejercicio 2)
+##Ejercicio 2
 
 Un sistema de control cuenta con 4 procesos que realizan chequeos en forma colaborativa. Para ello, reciben el historial de fallos del día anterior (por simplicidad, de tamaño N). De cada fallo, se conoce su número de identificación (ID) y su nivel de gravedad (0=bajo, 1=intermedio, 2=alto, 3=crítico). Resuelva considerando las siguientes situaciones:
 
@@ -49,95 +53,97 @@ b. Se debe calcular la cantidad de fallos por nivel de gravedad, debiendo quedar
 
 c. Ídem b. pero cada proceso debe ocuparse de contar los fallos de un nivel de gravedad determinado
 
+int cant = 0; sem mutex=1; colaDefallos cola[N] ; array vectorGlobal[3]= ([3] 0); sem semNivel[3] = ([3] 1);
 
+```c
 
-int cant = 0; sem mutex=1;  colaDefallos cola[N]  ; array vectorGlobal[3]= ([3] 0); sem semNivel[3] = ([3] 1);
-							
-							
 a)
 	Process fallos [0..3]
 	{
 		Fallo fallo ;
-		
+
 		P(mutex) //este p mutex es para que no pueda haber dos procesos queriendo sumar cant al mismo tiempo  y evitar el error de hacer un pop a algo q no existe
-		
+
 		while(cant < N )
-		{		
+		{
 				fallo=colaDefallos.pop();
 				cant++;
 				V(mutex)
-				
+
 				if(fallo.getNivel() == 3)
 				{
 					print(fallo.getId());
 				}
-				
+
 				P(mutex);//este p mutex es para que no pueda haber dos procesos queriendo sumar cant al mismo tiempo
-		
+
 		}
-		
+
 		V(mutex)//volvemos a poner mutex en 1 para que no quede en 0 y se bloqueen todos los procesos en el P(mutex) de arriba o el de abajo.
-		
+
 	}
-	
+```
+
+```c
 b)
 	Process fallos [0..3]
 	{
 		Fallo fallo ;
-		
+
 		P(mutex) //este p mutex es para que no pueda haber dos procesos queriendo sumar cant al mismo tiempo  y evitar el error de hacer un pop a algo q no existe
-		
+
 		while(cant < N )
-		{	
-				
+		{
+
 				fallo=colaDefallos.pop();
 				cant++;
 				V(mutex)
-				
+
 				if(fallo.getNivel() == 3)
 				{
 					print(fallo.getId());
 				}
-				
+
 				P(semNivel[fallo.getNivel()]) // se hace semaforo de niveles porque no hay problema que varios procesos quieran sumar en distintos niveles. Por eso no se usa un semaforo solo.
-				
-				vectorGlobal[fallo.getNivel()]=vectorGlobal[fallo.getNivel()] + 1; 
-				
+
+				vectorGlobal[fallo.getNivel()]=vectorGlobal[fallo.getNivel()] + 1;
+
 			    V(semNivel[fallo.getNivel()])
-				
+
 				P(mutex);//este p mutex es para que no pueda haber dos procesos queriendo sumar cant al mismo tiempo
-		
+
 		}
-		
+
 		V(mutex)//volvemos a poner mutex en 1 para que no quede en 0 y se bloqueen todos los procesos en el P(mutex) de arriba o el de abajo.
 	}
-	
-	
+```
+
+```c
 c)
 
 Process fallos [i=0..3]
 	{
 		Fallo fallo ;
-		
+
 		P(mutex) //este p mutex es para que no pueda haber dos procesos queriendo sumar cant al mismo tiempo y evitar el error de hacer un pop a algo q no existe
-		
+
 		while(cant < N )
-		{	
-					
+		{
+
 				fallo=colaDefallos.pop();
 				cant++;
 				V(mutex)
-				
+
 				if(fallo.getNivel() == 3)
 				{
 					print(fallo.getId());
 				}
-				
+
 				if(fallo.getNivel() == i)
 				{
 
 					vectorGlobal[i]=vectorGlobal[i] + 1; // no es necesario el semaforo de niveles ya que no puede haber dos procesos sumando uno en la misma posicion del vector.
-				
+
 				}
 				else
 				{
@@ -146,28 +152,29 @@ Process fallos [i=0..3]
 					cant--;
 					V(mutex)
 				}
-				
+
 				P(mutex);//este p mutex es para que no pueda haber dos procesos queriendo sumar cant al mismo tiempo y evitar el error de hacer un pop a algo q no existe
-		
+
 		}
-		
+
 		V(mutex)//volvemos a poner mutex en 1 para que no quede en 0 y se bloqueen todos los procesos en el P(mutex) de arriba o el de abajo.
 	}
-	
+
 }
+```
 
-
-Ejercicio 3)
+##Ejercicio 3
 
 Un sistema operativo mantiene 5 instancias de un recurso almacenadas en una cola. Además, existen P procesos que necesitan usar una instancia del recurso.
 Para eso, deben sacar la instancia de la cola antes de usarla. Una vez usada, la instancia debe ser encolada nuevamente.
 
+```c
 sem mutex=1,entranSolo5=5;  colaDeRecursos cola[5];
 
 Process Recursos [0..P]
 {
 	Recurso recurso;
-	
+
 	while(true)
 	{
 		P(entranSolo5)
@@ -181,8 +188,9 @@ Process Recursos [0..P]
 		V(entranSolo5)
    }
 }
+```
 
-Ejercicio 4)
+##Ejercicio 4
 
 Suponga que existe una BD que puede ser accedida por 6 usuarios como máximo al mismo tiempo. Además, los usuarios se clasifican como usuarios de prioridad alta
 y usuarios de prioridad baja. Por último, la BD tiene la siguiente restricción:
@@ -191,34 +199,38 @@ no puede haber más de 4 usuarios con prioridad alta al mismo tiempo usando la B
 no puede haber más de 5 usuarios con prioridad baja al mismo tiempo usando la BD.
 Indique si la solución presentada es la más adecuada. Justifique la respuesta.
 
+```c
 Var
 sem: semaphoro := 6;
 alta: semaphoro := 4;
 baja: semaphoro := 5
+```
 
-Process Usuario-Alta [I:1..L]::	                            
- { 
- 
+```c
+Process Usuario-Alta [I:1..L]::
+ {
+
 	P (sem);
 	P (alta);
-	//usa la BD 
+	//usa la BD
 	V(sem);
 	V(alta);
  }
- 
- 
- 
- 
+```
+
+```c
  Process Usuario-Baja [I:1..K]::
- { 
+ {
 	P (sem);
 	P (baja);
-	//usa la BD 
+	//usa la BD
 	V(sem);
 	V(baja);
  }
+```
 
-Respuesta: 
+```c
+Respuesta:
 Pimero estan mal declaradas la variables, deberia ser :
 
 sem sem  = 6;
@@ -227,35 +239,35 @@ sem baja = 5
 
 Una mejor solución seria hacer las P(alta) y P(baja) primero que P(sem):
 
-Process Usuario-Alta [I:1..L]::	                            
- { 
+Process Usuario-Alta [I:1..L]::
+ {
 	P (alta);
 	P (sem);
-	//usa la BD 
+	//usa la BD
 	V(sem);
 	V(alta);
  }
- 
- 
- 
- 
+
+
+
+
  Process Usuario-Baja [I:1..K]::
- { 
+ {
 	P (baja);
 	P (sem);
 	//usa la BD
 	V(sem);
 	V(baja);
  }
- 
+
  Como estaba antes , si venian 6 procesos de prioridad ALTA , los 6 iban a pasar el P(sem), cuando pasen por P(alta)
  de esos 6 que pasaron 4 solo van a poder ingresar a usar la DB por lo tanto si venian 2  usuarios de baja prioridad por ejemplo, y querian hacer su P(sem) no iban a poder acceder
  y estarias disminuyendo la concurrencia ya que si los de alta habia 4 ejecutandose los 2 de baja que vinieron luego tendrian que haber podido acceder a la base de datos
  para usarla tambien.
- 
 
+```
 
-Ejercicio 5)
+##Ejercicio 5
 
 En una empresa de logística de paquetes existe una sala de contenedores donde se preparan las entregas. Cada contenedor puede
 almacenar un paquete y la sala cuenta con capacidad para N contenedores. Resuelva considerando las siguientes situaciones:
@@ -268,12 +280,12 @@ b) Modifique la solución a) para el caso en que haya P empleados Preparadores.
 c) Modifique la solución a) para el caso en que haya E empleados Entregadores.
 
 d) Modifique la solución a) para el caso en que haya P empleados Preparadores y E empleadores Entregadores.
- 
- 
+
+```c
 a)
 
 Paquete contenedores[N];
-sem cantidadDeLugaresVacios = N; 
+sem cantidadDeLugaresVacios = N;
 sem hayPaquetes = 0;
 int punteroEntregador= 0,punteroPreparador = 0;
 
@@ -282,13 +294,13 @@ Process Preparador
 	while(true)
 	{
 	    //preparar paquete
-		
+
 		P(cantidadDeLugaresVacios)
 		contenedores[punteroPreparador]= paquete
         punteroPreparador= (punteroPreparador + 1) mod N;
-		
+
 		V(hayPaquetes)
-	
+
 	}
 }
 
@@ -297,19 +309,21 @@ Process Entregador
 	while(true)
 	{
 		P(hayPaquetes)
-		
+
 		paquete = contenedores[punteroEntregador]
 		punteroEntregador= (punteroEntregador + 1) mod N;
-		
+
 		V(cantidadDeLugaresVacios)
 		//entregar paquete
 	}
 }
+```
 
+```c
 b)
 
 Paquete contenedores[N];
-sem cantidadDeLugaresVacios = N; 
+sem cantidadDeLugaresVacios = N;
 sem hayPaquetes = 0;
 int punteroEntregador= 0,punteroPreparador = 0;
 sem mutexP=1;
@@ -324,9 +338,9 @@ Process Preparador [0..P-1]
 		contenedores[punteroPreparador]= paquete
         punteroPreparador= (punteroPreparador + 1) mod N;
 		V(mutexP)
-		
+
 		V(hayPaquetes)
-	
+
 	}
 }
 
@@ -335,59 +349,54 @@ Process Entregador
 	while(true)
 	{
 		P(hayPaquetes)
-		
+
 		paquete = contenedores[punteroEntregador]
 		punteroEntregador= (punteroEntregador + 1) mod N;
-		
+
 		V(cantidadDeLugaresVacios)
 		//entregar paquete
 	}
 }
+```
 
 c)
 
 Paquete contenedores[N];
-sem cantidadDeLugaresVacios = N; 
+sem cantidadDeLugaresVacios = N;
 sem hayPaquetes = 0;
 int punteroEntregador= 0,punteroPreparador = 0;
 sem mutexE=1;
 
 Process Preparador [0..P-1]
 {
-	while(true)
-	{
-	    //preparar paquete
-		P(cantidadDeLugaresVacios)
-		
-		contenedores[punteroPreparador]= paquete
-        punteroPreparador= (punteroPreparador + 1) mod N;
-		
-		
-		V(hayPaquetes)
-	
-	}
+while(true)
+{
+//preparar paquete
+P(cantidadDeLugaresVacios)
+contenedores[punteroPreparador]= paquete
+punteroPreparador= (punteroPreparador + 1) mod N;
+V(hayPaquetes)
+}
 }
 
 Process Entregador [0..E-1]
 {
-	while(true)
-	{
-		P(hayPaquetes)
-		
-		P(mutexE)
-		paquete = contenedores[punteroEntregador]
-		punteroEntregador= (punteroEntregador + 1) mod N;
-		V(mutexE)
-		
-		V(cantidadDeLugaresVacios)
-		//entregar paquete
-	}
+while(true)
+{
+P(hayPaquetes)
+P(mutexE)
+paquete = contenedores[punteroEntregador]
+punteroEntregador= (punteroEntregador + 1) mod N;
+V(mutexE)
+V(cantidadDeLugaresVacios)
+//entregar paquete
+}
 }
 
 d)
 
 Paquete contenedores[N];
-sem cantidadDeLugaresVacios = N; 
+sem cantidadDeLugaresVacios = N;
 sem hayPaquetes = 0;
 int punteroEntregador= 0,punteroPreparador = 0;
 sem mutexP=1;
@@ -395,36 +404,31 @@ sem mutexE=1;
 
 Process Preparador [0..P-1]
 {
-	while(true)
-	{
-	    //preparar paquete
-		P(cantidadDeLugaresVacios)
-		P(mutexP)
-		contenedores[punteroPreparador]= paquete
-        punteroPreparador= (punteroPreparador + 1) mod N;
-		V(mutexP)
-		
-		V(hayPaquetes)
-	
-	}
+while(true)
+{
+//preparar paquete
+P(cantidadDeLugaresVacios)
+P(mutexP)
+contenedores[punteroPreparador]= paquete
+punteroPreparador= (punteroPreparador + 1) mod N;
+V(mutexP)
+V(hayPaquetes)
+}
 }
 
 Process Entregador [0..E-1]
 {
-	while(true)
-	{
-		P(hayPaquetes)
-		
-		P(mutexE)
-		paquete = contenedores[punteroEntregador]
-		punteroEntregador= (punteroEntregador + 1) mod N;
-		V(mutexE)
-		
-		V(cantidadDeLugaresVacios)
-		//entregar paquete
-	}
+while(true)
+{
+P(hayPaquetes)
+P(mutexE)
+paquete = contenedores[punteroEntregador]
+punteroEntregador= (punteroEntregador + 1) mod N;
+V(mutexE)
+V(cantidadDeLugaresVacios)
+//entregar paquete
 }
-
+}
 
 Ejercicio 6 )
 
@@ -442,7 +446,5 @@ c) Modifique la solución de (a) para el caso en que se deba respetar estrictame
 d) Modifique la solución de (b) para el caso en que además hay un proceso Coordinador que le indica a cada persona que es su turno de usar la impresora.
 
 e) Modificar la solución (d) para el caso en que sean 5 impresoras. El coordinador le indica a la persona cuando puede usar una impresora, y cual debe usar.
-
-
 
 a)
