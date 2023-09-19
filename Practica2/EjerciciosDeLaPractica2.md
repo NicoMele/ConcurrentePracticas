@@ -495,7 +495,7 @@ int aux;
 
 	Imprimir(documento)
 
-	P(mutex)// po si entra otra persona , yo no puedo estar chequeando si cola esta vacio y no mientras otro talvez se esta encolando, por eso esta este mutex
+	P(mutex)// por si entra otra persona , yo no puedo estar chequeando si la cola esta vacia al mismo tiempo que otro tal vez se esta encolando, por eso esta este mutex
 	if(!cola.isEmpty())
 	{
 		aux=pop.cola();//el pop me devuelve el id del proceso
