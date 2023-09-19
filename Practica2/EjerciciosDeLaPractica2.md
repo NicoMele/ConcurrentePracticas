@@ -1,6 +1,6 @@
 # Práctica 2 - Semáforos
 
-##Ejercicio 1
+## Ejercicio 1
 
 Existen N personas que deben ser chequeadas por un detector de metales antes de poder
 ingresar al avión.
@@ -43,7 +43,7 @@ Processs Persona [0..N]
 
 ```
 
-##Ejercicio 2
+## Ejercicio 2
 
 Un sistema de control cuenta con 4 procesos que realizan chequeos en forma colaborativa. Para ello, reciben el historial de fallos del día anterior (por simplicidad, de tamaño N). De cada fallo, se conoce su número de identificación (ID) y su nivel de gravedad (0=bajo, 1=intermedio, 2=alto, 3=crítico). Resuelva considerando las siguientes situaciones:
 
@@ -163,7 +163,7 @@ Process fallos [i=0..3]
 }
 ```
 
-##Ejercicio 3
+## Ejercicio 3
 
 Un sistema operativo mantiene 5 instancias de un recurso almacenadas en una cola. Además, existen P procesos que necesitan usar una instancia del recurso.
 Para eso, deben sacar la instancia de la cola antes de usarla. Una vez usada, la instancia debe ser encolada nuevamente.
@@ -190,7 +190,7 @@ Process Recursos [0..P]
 }
 ```
 
-##Ejercicio 4
+## Ejercicio 4
 
 Suponga que existe una BD que puede ser accedida por 6 usuarios como máximo al mismo tiempo. Además, los usuarios se clasifican como usuarios de prioridad alta
 y usuarios de prioridad baja. Por último, la BD tiene la siguiente restricción:
@@ -230,7 +230,9 @@ Process Usuario-Alta [I:1..L]::
 ```
 
 ```c
-Respuesta:
+
+# Respuesta:
+
 Pimero estan mal declaradas la variables, deberia ser :
 
 sem sem  = 6;
@@ -267,7 +269,7 @@ Process Usuario-Alta [I:1..L]::
 
 ```
 
-##Ejercicio 5
+## Ejercicio 5
 
 En una empresa de logística de paquetes existe una sala de contenedores donde se preparan las entregas. Cada contenedor puede
 almacenar un paquete y la sala cuenta con capacidad para N contenedores. Resuelva considerando las siguientes situaciones:
@@ -358,7 +360,7 @@ Process Entregador
 	}
 }
 ```
-
+```c
 c)
 
 Paquete contenedores[N];
@@ -392,7 +394,9 @@ V(cantidadDeLugaresVacios)
 //entregar paquete
 }
 }
+```
 
+```c
 d)
 
 Paquete contenedores[N];
@@ -429,8 +433,8 @@ V(cantidadDeLugaresVacios)
 //entregar paquete
 }
 }
-
-Ejercicio 6 )
+```
+## Ejercicio 6 
 
 Existen N personas que deben imprimir un trabajo cada una. Resolver cada ítem usando semáforos:
 
@@ -447,4 +451,11 @@ d) Modifique la solución de (b) para el caso en que además hay un proceso Coor
 
 e) Modificar la solución (d) para el caso en que sean 5 impresoras. El coordinador le indica a la persona cuando puede usar una impresora, y cual debe usar.
 
+
+```c
 a)
+
+
+
+
+```
