@@ -1,14 +1,13 @@
 # Práctica 2 - Semáforos
 
 ## Ejercicios:
-<ul>
-<li><a href="#Ejercicio 1">Ejercicio 1</a></li>
-<li><a href="#Ejercicio 2">Ejercicio 2</a></li>
-<li><a href="#Ejercicio 3">Ejercicio 3</a></li>
-<li><a href="#Ejercicio 4">Ejercicio 4</a></li>
-<li><a href="#Ejercicio 5">Ejercicio 5</a></li>
-<li><a href="#Ejercicio 6">Ejercicio 6</a></li>
-</ul>
+- [Ejercicio 1]
+- [Ejercicio 2]
+- [Ejercicio 3]
+- [Ejercicio 4]
+- [Ejercicio 5]
+- [Ejercicio 6]
+- [Ejercicio 7]
 
 ## Ejercicio 1
 
