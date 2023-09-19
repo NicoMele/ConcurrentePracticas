@@ -461,4 +461,13 @@ d) Modifique la solución de (b) para el caso en que además hay un proceso Coor
 
 e) Modificar la solución (d) para el caso en que sean 5 impresoras. El coordinador le indica a la persona cuando puede usar una impresora, y cual debe usar.
 
+```c
 a)
+sem mutex=1;
+Process Personas [0..P-1]
+{
+	P(mutex)
+	Imprimir(documento)
+	V(mutex)
+}
+```
