@@ -1,6 +1,7 @@
 # Práctica 2 - Semáforos
 
 ## Ejercicios:
+
 - [Ejercicio 1](#ejercicio-1)
 - [Ejercicio 2](#ejercicio-2)
 - [Ejercicio 3](#ejercicio-3)
@@ -366,6 +367,7 @@ Process Entregador
 	}
 }
 ```
+
 ```c
 c)
 
@@ -441,7 +443,8 @@ Process Entregador [0..E-1]
 		}
 }
 ```
-## Ejercicio 6 
+
+## Ejercicio 6
 
 Existen N personas que deben imprimir un trabajo cada una. Resolver cada ítem usando semáforos:
 
@@ -458,11 +461,4 @@ d) Modifique la solución de (b) para el caso en que además hay un proceso Coor
 
 e) Modificar la solución (d) para el caso en que sean 5 impresoras. El coordinador le indica a la persona cuando puede usar una impresora, y cual debe usar.
 
-
-
 a)
-
-
-
-
-
