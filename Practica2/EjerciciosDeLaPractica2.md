@@ -1,5 +1,14 @@
 # Práctica 2 - Semáforos
 
+## Ejercicios:
+<a href="#Ejercicio 1">Ejercicio 1</a>
+<a href="#Ejercicio 2">Ejercicio 2</a>
+<a href="#Ejercicio 3">Ejercicio 3</a>
+<a href="#Ejercicio 4">Ejercicio 4</a>
+<a href="#Ejercicio 5">Ejercicio 5</a>
+<a href="#Ejercicio 6">Ejercicio 6</a>
+
+
 ## Ejercicio 1
 
 Existen N personas que deben ser chequeadas por un detector de metales antes de poder
@@ -450,10 +459,10 @@ d) Modifique la solución de (b) para el caso en que además hay un proceso Coor
 e) Modificar la solución (d) para el caso en que sean 5 impresoras. El coordinador le indica a la persona cuando puede usar una impresora, y cual debe usar.
 
 
-```c
+
 a)
 
 
 
 
-```
+
