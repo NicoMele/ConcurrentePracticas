@@ -53,9 +53,9 @@ b. Se debe calcular la cantidad de fallos por nivel de gravedad, debiendo quedar
 
 c. Ídem b. pero cada proceso debe ocuparse de contar los fallos de un nivel de gravedad determinado
 
+```c
 int cant = 0; sem mutex=1; colaDefallos cola[N] ; array vectorGlobal[3]= ([3] 0); sem semNivel[3] = ([3] 1);
 
-```c
 
 a)
 	Process fallos [0..3]
@@ -250,9 +250,6 @@ Process Usuario-Alta [I:1..L]::
 	V(alta);
  }
 
-
-
-
  Process Usuario-Baja [I:1..K]::
  {
 	P (baja);
@@ -371,28 +368,29 @@ sem mutexE=1;
 
 Process Preparador [0..P-1]
 {
-while(true)
-{
-//preparar paquete
-P(cantidadDeLugaresVacios)
-contenedores[punteroPreparador]= paquete
-punteroPreparador= (punteroPreparador + 1) mod N;
-V(hayPaquetes)
-}
+
+	while(true)
+		{
+		//preparar paquete
+		P(cantidadDeLugaresVacios)
+		contenedores[punteroPreparador]= paquete
+		punteroPreparador= (punteroPreparador + 1) mod N;
+		V(hayPaquetes)
+		}
 }
 
 Process Entregador [0..E-1]
 {
-while(true)
-{
-P(hayPaquetes)
-P(mutexE)
-paquete = contenedores[punteroEntregador]
-punteroEntregador= (punteroEntregador + 1) mod N;
-V(mutexE)
-V(cantidadDeLugaresVacios)
-//entregar paquete
-}
+		while(true)
+		{
+		P(hayPaquetes)
+		P(mutexE)
+		paquete = contenedores[punteroEntregador]
+		punteroEntregador= (punteroEntregador + 1) mod N;
+		V(mutexE)
+		V(cantidadDeLugaresVacios)
+		//entregar paquete
+		}
 }
 ```
 
@@ -408,30 +406,30 @@ sem mutexE=1;
 
 Process Preparador [0..P-1]
 {
-while(true)
-{
-//preparar paquete
-P(cantidadDeLugaresVacios)
-P(mutexP)
-contenedores[punteroPreparador]= paquete
-punteroPreparador= (punteroPreparador + 1) mod N;
-V(mutexP)
-V(hayPaquetes)
-}
+		while(true)
+		{
+		//preparar paquete
+		P(cantidadDeLugaresVacios)
+		P(mutexP)
+		contenedores[punteroPreparador]= paquete
+		punteroPreparador= (punteroPreparador + 1) mod N;
+		V(mutexP)
+		V(hayPaquetes)
+		}
 }
 
 Process Entregador [0..E-1]
 {
-while(true)
-{
-P(hayPaquetes)
-P(mutexE)
-paquete = contenedores[punteroEntregador]
-punteroEntregador= (punteroEntregador + 1) mod N;
-V(mutexE)
-V(cantidadDeLugaresVacios)
-//entregar paquete
-}
+		while(true)
+		{
+		P(hayPaquetes)
+		P(mutexE)
+		paquete = contenedores[punteroEntregador]
+		punteroEntregador= (punteroEntregador + 1) mod N;
+		V(mutexE)
+		V(cantidadDeLugaresVacios)
+		//entregar paquete
+		}
 }
 ```
 ## Ejercicio 6 
