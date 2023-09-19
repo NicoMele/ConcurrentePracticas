@@ -466,8 +466,45 @@ a)
 sem mutex=1;
 Process Personas [0..P-1]
 {
+	Documento documento;
 	P(mutex)
 	Imprimir(documento)
+	V(mutex)
+}
+```
+
+```c
+b)
+sem mutex=1; colaDeLlegada cola[N] ,sem espera[N]; bool libre=true;
+Process Personas [id:0..P-1]
+{
+Documento documento;
+int aux;
+	P(mutex)
+	if(libre)
+	{
+		libre=false;
+		V(mutex);
+	}
+	else
+	{
+		cola.push(id)//encolo id del proceso
+		V(mutex)
+		P(espera[id])
+	}
+
+	Imprimir(documento)
+
+	P(mutex)// po si entra otra persona , yo no puedo estar chequeando si cola esta vacio y no mientras otro talvez se esta encolando, por eso esta este mutex
+	if(!cola.isEmpty())
+	{
+		aux=pop.cola();//el pop me devuelve el id del proceso
+		V(espera[aux])
+	}
+	else
+	{
+		libre=true;
+	}
 	V(mutex)
 }
 ```
