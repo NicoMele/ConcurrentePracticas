@@ -581,7 +581,7 @@ Process Personas [id:0..N-1]
 	impresoras.push(impresoraACadaPersona[id]);
 	V(mutexImpresora)
 
-	V(CantImpresoras)
+	V(CantImpresoras)//avisa que hay otra impresora disponible
 }
 
 Process Coordinador
