@@ -586,7 +586,7 @@ Process Personas [id:0..N-1]
 
 Process Coordinador
 {
-	int auxImpresora;
+	int numeroDeImpresora;
 	int idPersona;
 	while (true)
 	{
@@ -596,8 +596,8 @@ Process Coordinador
 		V(mutex)
 		P(CantImpresoras)//para que pase 5 veces porque hay 5 impresoras.
 		P(mutexImpresora)
-		auxImpresora=impresoras.pop();
-		impresoraACadaPersona[idPersona]=auxImpresora
+		numeroDeImpresora=impresoras.pop();
+		impresoraACadaPersona[idPersona]=numeroDeImpresora
 		V(mutexImpresora)
 		V(espera[idPersona])
 	}
