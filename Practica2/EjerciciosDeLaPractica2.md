@@ -527,7 +527,7 @@ Process persona [id:0..N-1]{//el que tiene id 0 despierta al que tiene id 1, el 
 ```c
 d)
 
-sem mutex=1; colaDeLlegada cola[N] ,sem espera[N]= ([N] 0); bool libre=true;
+sem mutex=1; colaDeLlegada cola[N] ,sem espera[N]= ([N] 0);
 sem termino=0; sem lleno = 0;
 
 Process Personas [id:0..N-1]
@@ -561,8 +561,8 @@ Process Coordinador
 ```c
 e)
 
-sem mutex=1; colaDeLlegada cola[N] ,sem espera[N]= ([N] 0) ; bool libre=true;
-sem termino=0; sem lleno = 0; array impresoraACadaPersona = ([N] -1) ; sem CantImpresoras=5;
+sem mutex=1; colaDeLlegada cola[N] ,sem espera[N]= ([N] 0) ;
+sem lleno = 0; array impresoraACadaPersona = ([N] -1) ; sem CantImpresoras=5;
 int impresoras [5] = {0,1,2,3,4}
 sem mutexImpresora=1;
 
