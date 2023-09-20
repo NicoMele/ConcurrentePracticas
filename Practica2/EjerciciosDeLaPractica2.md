@@ -603,3 +603,9 @@ Process Coordinador
 	}
 }
 ```
+
+## Ejercicio 7
+
+```c
+
+```
