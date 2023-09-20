@@ -464,7 +464,7 @@ e) Modificar la solución (d) para el caso en que sean 5 impresoras. El coordina
 ```c
 a)
 sem mutex=1;
-Process Personas [0..P-1]
+Process Personas [0..N-1]
 {
 	Documento documento;
 	P(mutex)
@@ -476,7 +476,7 @@ Process Personas [0..P-1]
 ```c
 b)
 sem mutex=1; colaDeLlegada cola[N] ,sem espera[N]; bool libre=true;
-Process Personas [id:0..P-1]
+Process Personas [id:0..N-1]
 {
 Documento documento;
 int aux;
@@ -506,5 +506,87 @@ int aux;
 		libre=true;
 	}
 	V(mutex)
+}
+```
+
+```c
+c)
+int proximo = 0;
+sem espera[P] = ([P] 0);
+
+Process persona [id:0..N-1]{//el que tiene id 0 despierta al que tiene id 1, el que tiene id 1 al que tiene id 2 y asi.
+    Documento documento;
+    if (id != 0){
+        P(espera[i]);
+    }
+    Imprimir(documento);
+    V(espera[id+1]);
+}
+```
+
+```c
+d)
+
+sem mutex=1; colaDeLlegada cola[N] ,sem espera[N]= ([N] 0); bool libre=true;
+sem termino=0; sem lleno = 0;
+
+Process Personas [id:0..N-1]
+{
+	Documento documento;
+	P(mutex)
+	cola.push(id)//encolo id del proceso
+	V(mutex)
+	V(lleno)
+	P(espera[id])
+	Imprimir(documento)
+	V(termino)
+}
+
+Process Coordinador
+{
+	int aux;
+	while (true)
+	{
+		P(lleno)
+		P(mutex)
+		aux=cola.pop();
+		V(mutex)
+		V(espera[aux])
+		P(termino)
+	}
+
+}
+```
+
+```c
+e)
+
+sem mutex=1; colaDeLlegada cola[N] ,sem espera[N]= ([N] 0) ; bool libre=true;
+sem termino=0; sem lleno = 0; sem esperaImpresora[N]= ([N] 1) ; int [4]={0,1,2,3,4}
+
+Process Personas [id:0..N-1]
+{
+	Documento documento;
+	P(mutex)
+	cola.push(id)//encolo id del proceso
+	V(mutex)
+	V(lleno)
+	P(espera[id])
+	Imprimir(documento,)
+	V(termino)
+}
+
+Process Coordinador
+{
+	int aux;
+	while (true)
+	{
+		P(lleno)
+		P(mutex)
+		aux=cola.pop();
+		V(mutex)
+		V(espera[aux])
+		P(termino)
+	}
 }
 ```
