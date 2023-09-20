@@ -578,7 +578,7 @@ Process Personas [id:0..N-1]
 	Imprimir(documento,impresoraACadaPersona[id])
 
 	P(mutexImpresora)
-	impresoras.push(impresoraACadaPersona[idPersona]);
+	impresoras.push(impresoraACadaPersona[id]);
 	V(mutexImpresora)
 
 	V(CantImpresoras)
