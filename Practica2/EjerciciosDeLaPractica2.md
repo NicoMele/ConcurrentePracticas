@@ -562,7 +562,10 @@ Process Coordinador
 e)
 
 sem mutex=1; colaDeLlegada cola[N] ,sem espera[N]= ([N] 0) ; bool libre=true;
-sem termino=0; sem lleno = 0; sem esperaImpresora[N]= ([N] 1) ; int [4]={0,1,2,3,4}
+sem termino=0; sem lleno = 0; array impresoraACadaPersona = ([N] -1) ; int CantImpresoras=5;
+int impresoras [5] = {0,1,2,3,4}
+sem mutexImpresora=1;
+int auxImpresora;
 
 Process Personas [id:0..N-1]
 {
@@ -572,21 +575,31 @@ Process Personas [id:0..N-1]
 	V(mutex)
 	V(lleno)
 	P(espera[id])
-	Imprimir(documento,)
-	V(termino)
+
+	Imprimir(documento,impresoraACadaPersona[id])
+
+	P(mutexImpresora)
+	impresoras.push(impresoraACadaPersona[idPersona]);
+	V(mutexImpresora)
+
+	V(CantImpresoras)
 }
 
 Process Coordinador
 {
-	int aux;
+	int idPersona;
 	while (true)
 	{
 		P(lleno)
 		P(mutex)
-		aux=cola.pop();
+		idPersona=cola.pop();//saco ide de la persona
 		V(mutex)
-		V(espera[aux])
-		P(termino)
+		P(CantImpresoras)//para que pase 5 veces porque hay 5 impresoras.
+		P(mutexImpresora)
+		auxImpresora=impresoras.pop();
+		impresoraACadaPersona[idPersona]=auxImpresora
+		V(mutexImpresora)
+		V(espera[idPersona])
 	}
 }
 ```
