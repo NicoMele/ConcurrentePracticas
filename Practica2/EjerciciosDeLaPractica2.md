@@ -562,7 +562,7 @@ Process Coordinador
 e)
 
 sem mutex=1; colaDeLlegada cola[N] ,sem espera[N]= ([N] 0) ; bool libre=true;
-sem termino=0; sem lleno = 0; array impresoraACadaPersona = ([N] -1) ; int CantImpresoras=5;
+sem termino=0; sem lleno = 0; array impresoraACadaPersona = ([N] -1) ; sem CantImpresoras=5;
 int impresoras [5] = {0,1,2,3,4}
 sem mutexImpresora=1;
 int auxImpresora;
