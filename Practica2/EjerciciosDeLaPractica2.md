@@ -693,7 +693,7 @@ Process Empleados [id=0..E-1]
 	P(mutex)
 	contador = contador + 1;
 	if (contador == E)/
-	{ for i = 0..E → V(barreraEmpleados);}
+	{ for i = 0..E-1 → V(barreraEmpleados);}
 	V(mutex)
 	P(barreraEmpleados)
 	P(mutex)
@@ -727,7 +727,7 @@ Process Empresa
     int j;
     P(despiertoEmpresa);
    	premio = empleados.Max().getId();//devuelve el id del empleado con mayor puntaje.
-    for j = 0..E -> V(esperoPremio);
+    for j = 0..E-1 -> V(esperoPremio);
 }
 ```
 
