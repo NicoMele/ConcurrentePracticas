@@ -597,7 +597,7 @@ Process Coordinador
 	{
 		P(lleno)
 		P(mutex)
-		idPersona=cola.pop();//saco ide de la persona
+		idPersona=cola.pop();//saco id de la persona
 		V(mutex)
 		P(CantImpresoras)//para que pase 5 veces porque hay 5 impresoras.
 		P(mutexImpresora)
@@ -626,6 +626,7 @@ int contador=0;
 sem seDioPuntaje[10] = ([10] 0);
 int puntajeTarea[10] = ([10] 0);
 cola finalizadas;
+sem termineTarea=0;
 
 Process Alumnos [id=0..49]
 {
@@ -648,7 +649,6 @@ Process Alumnos [id=0..49]
     V(termineTarea);
     P(seDioPuntaje[tarea]);
     puntaje = puntajeTarea[tarea];
-
 }
 
 Process profesor{
