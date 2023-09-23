@@ -638,7 +638,7 @@ Process Alumnos [id=0..49]
     P(barrera);
     //realizar tarea
     P(mutex);
-    finalizadas.push(tarea);
+    finalizadas.push(tarea);//encolo los numeros de las tareas a medida que van terminando.
     V(mutex);
     V(termineTarea);
     P(seDioPuntaje[tarea]);
@@ -664,3 +664,5 @@ Process profesor{
     }
 }
 ```
+
+## Ejercicio 8
