@@ -613,6 +613,54 @@ queda esperando el puntaje del grupo, el cual está dado por todos aquellos que 
 el mismo enunciado. Cuando un grupo terminó, el profesor les otorga un puntaje que
 representa el orden en que se terminó esa tarea de las 10 posibles.
 
-```c
+Nota: Para elegir la tarea suponga que existe una función elegirTarea() que le asigna una tarea a un alumno (esta función asignará 10 tareas diferentes entre 50 alumnos, es decir, que 5 alumnos tendrán la tarea 1, otros 5 la tarea 2 y así sucesivamente para las 10 tareas).
 
+```c
+sem mutex=1;sem barrera=0;
+int contador=0;
+sem seDioPuntaje[10] = ([10] 0);
+int puntajeTarea[10] = ([10] 0);
+cola finalizadas;
+
+Process Alumnos [id=0..49]
+{
+	int tarea; int puntaje; int j;
+
+	Tarea tarea = elegirTarea();//obtengo numero de tarea
+	P(mutex)
+
+	contador = contador + 1;
+
+	if (contador == 49)// si contador es 50 es porque ya llegaron todos los alumnos y eligieron su tarea.
+	{ for i = 0..49 → V(barrera);}
+
+	V(mutex);
+    P(barrera);
+    //realizar tarea
+    P(mutex);
+    finalizadas.push(tarea);
+    V(mutex);
+    V(termineTarea);
+    P(seDioPuntaje[tarea]);
+    puntaje = puntajeTarea[tarea];
+
+}
+
+Process profesor{
+
+    int puntaje=10; int contadorTarea[10] = ([10] 0); int j; int tarea; int i;
+
+    for j = 0..49{
+        P(termineTarea);
+        P(mutex);
+        tarea = finalizadas.pop();
+        V(mutex);
+        contadorTarea[tarea]++;
+        if (contadorTarea[tarea] == 5){
+            puntajeTarea[tarea] = puntaje;
+            for i = 1..5 -> V(seDioPuntaje[tarea]);
+            puntaje--;
+        }
+    }
+}
 ```
