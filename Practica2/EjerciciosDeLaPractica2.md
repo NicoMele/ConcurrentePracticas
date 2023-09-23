@@ -809,6 +809,44 @@ Process Armador[idArmador=0..1]
 
 ## Ejercicio 10
 
-A una cerealera van T camiones a descargarse trigo y M camiones a descargar maíz. Sólo hay lugar para que 7 camiones a la vez descarguen, pero no pueden ser más de 5 del mismo tipo de cereal.
+A una cerealera van T camiones a descargar trigo y M camiones a descargar maíz. Sólo hay lugar para que 7 camiones a la vez descarguen, pero no pueden ser más de 5 del mismo tipo de cereal.
 
 Nota: no usar un proceso extra que actué como coordinador, resolverlo entre los camiones.
+
+```c
+
+sem soloEntran7=7;
+sem soloHasta5Trigo=5;
+sem soloHasta5Maiz=5;
+
+Process CamionesTrigo[0..T-1]
+{
+	P(soloHasta5Trigo)
+	P(soloEntran7)
+	//descargar
+	V(soloEntran7)
+	V(soloHasta5Trigo)
+}
+
+Process CamionesMaiz[0..M-1]
+{
+	P(soloHasta5Maiz)
+	P(soloEntran7) //1
+	//descargar
+	V(soloEntran7)
+	V(soloHasta5Maiz)
+}
+
+```
+
+## Ejercicio 11
+
+En un vacunatorio hay un empleado de salud para vacunar a 50 personas. El empleado de salud atiende a las personas de acuerdo con el orden de llegada y de a 5 personas a la vez. Es decir, que cuando está libre debe esperar a que haya al menos 5 personas esperando, luego vacuna a las 5 primeras personas, y al terminar las deja ir para esperar por otras 5. Cuando ha atendido a las 50 personas el empleado de salud se retira.
+
+Nota: todos los procesos deben terminar su ejecución; asegurarse de no realizar Busy Waiting; suponga que el empleado tienen una función VacunarPersona() que simula que el empleado está vacunando a UNA persona.
+
+```c
+
+
+
+```
