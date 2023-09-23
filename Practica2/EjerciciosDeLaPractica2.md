@@ -651,10 +651,9 @@ Process Alumnos [id=0..49]
     puntaje = puntajeTarea[tarea];
 }
 
-Process profesor{
-
+Process profesor
+{
     int puntaje=10; int contadorTarea[10] = ([10] 0); int j; int tarea; int i;
-
     for j = 0..49{
         P(termineTarea);
         P(mutex);
@@ -680,5 +679,64 @@ tardar distinto tiempo en fabricar una pieza. Al finalizar el día, se le da un 
 empleado que más piezas fabricó.
 
 ```c
+sem barreraEmpleados=0; int cantPiezas = 0; array empleados=([E] -1);
+int contador=0;
+sem mutex=1;
+sem seFinalizo=0;
+int termino=0;
+int premio=-1;
+sem despiertoEmpresa=0;
+sem esperoPremio=0;
 
+Process Empleados [id=0..E]
+{
+	P(mutex)
+	contador = contador + 1;
+	if (contador == E)/
+	{ for i = 0..E → V(barreraEmpleados);}
+	V(mutex)
+	P(barreraEmpleados)
+	P(mutex)
+	while(cantPiezas < T)
+	{
+		//HACER PIEZA
+		cantPiezas++;
+		V(mutex);
+		empleados[id]=empleados[id] + 1 ;
+		P(mutex)
+	}
+	V(mutex)
+
+	P(seFinalizo)
+	termino++;
+	if(termino == E)
+	{
+		V(despiertoEmpresa)
+	}
+	V(seFinalizo)
+	P(esperoPremio)
+	if(premio == id)
+	{
+		//gane premio
+	}
+
+}
+
+Process empresa
+{
+    int j;
+    P(despiertoEmpresa);
+   	premio = empleados.Max().getId();//devuelve el id del empleado con mayor puntaje.
+    for j = 0..E -> V(esperoPremio);
+}
 ```
+
+## Ejercicio 9
+
+Resolver el funcionamiento en una fábrica de ventanas con 7 empleados (4 carpinteros, 1 vidriero y 2 armadores) que trabajan de la siguiente manera:
+
+- Los carpinteros continuamente hacen marcos (cada marco es armando por un único carpintero) y los deja en un depósito con capacidad de almacenar 30 marcos.
+
+- El vidriero continuamente hace vidrios y los deja en otro depósito con capacidad para 50 vidrios.
+
+- Los armadores continuamente toman un marco y un vidrio (en ese orden) de los depósitos correspondientes y arman la ventana (cada ventana es armada por un único armador).
