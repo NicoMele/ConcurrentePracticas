@@ -637,7 +637,7 @@ Process Alumnos [id=0..49]
 
 	contador = contador + 1;
 
-	if (contador == 49)// si contador es 50 es porque ya llegaron todos los alumnos y eligieron su tarea.
+	if (contador == 49)// si contador es 49 (osea el ultimo) es porque ya llegaron todos los alumnos y eligieron su tarea.
 	{ for i = 0..49 → V(barrera);}
 
 	V(mutex);
@@ -688,7 +688,7 @@ int premio=-1;
 sem despiertoEmpresa=0;
 sem esperoPremio=0;
 
-Process Empleados [id=0..E]
+Process Empleados [id=0..E-1]
 {
 	P(mutex)
 	contador = contador + 1;
@@ -709,7 +709,7 @@ Process Empleados [id=0..E]
 
 	P(seFinalizo)
 	termino++;
-	if(termino == E)
+	if(termino == (E-1))//si es el ultimo
 	{
 		V(despiertoEmpresa)
 	}
@@ -722,7 +722,7 @@ Process Empleados [id=0..E]
 
 }
 
-Process empresa
+Process Empresa
 {
     int j;
     P(despiertoEmpresa);
@@ -740,3 +740,69 @@ Resolver el funcionamiento en una fábrica de ventanas con 7 empleados (4 carpin
 - El vidriero continuamente hace vidrios y los deja en otro depósito con capacidad para 50 vidrios.
 
 - Los armadores continuamente toman un marco y un vidrio (en ese orden) de los depósitos correspondientes y arman la ventana (cada ventana es armada por un único armador).
+
+```c
+
+sem depositoMarcos=30;
+sem depositoVidrios=50;
+sem mutexCarpinteros=1;
+sem mutexVidriero=1;
+cola colaMarcos;
+cola colaVidrios;
+sem llenoMarco=0;
+sem llenoVidrios=0;
+sem mutexArmador
+Process Carpintero[idCarpintero=0..3]
+{
+	Marco marco;
+	while(true)
+	{
+		P(depositoMarcos)
+		marco=ArmaMarco();
+		P(mutexCarpinteros)
+		colaMarcos.push(marco)
+		V(mutexCarpinteros)
+		V(llenoMarco)
+	}
+
+}
+
+Process Vidriero
+{
+	Vidrio vidrio;
+	while(true)
+	{
+		P(depositoVidrios)
+		vidrio=ArmaVidrio();
+		P(mutexVidriero)
+		colaVidrios.push(vidrio)
+		V(mutexVidriero)
+		V(llenoVidrios)
+	}
+
+}
+
+Process Armador[idArmador=0..1]
+{
+	Marco marco;
+	Vidrio vidrio;
+		while(true)
+		{
+			P(llenoMarco)
+			P(mutexCarpinteros)
+			marco=colaMarcos.pop();
+			V(mutexCarpinteros)
+			V(depositoMarcos)
+
+			P(llenoVidrio)
+			P(mutexVidriero)
+			vidrio=colaVidrio.pop();
+			V(mutexVidriero)
+			V(depositoVidrios)
+
+			P(mutexArmador)
+			//arma ventana
+			V(mutexArmador)
+		}
+}
+```
