@@ -692,7 +692,7 @@ Process Empleados [id=0..E-1]
 {
 	P(mutex)
 	contador = contador + 1;
-	if (contador == E)/
+	if (contador == E-1)/
 	{ for i = 0..E-1 → V(barreraEmpleados);}
 	V(mutex)
 	P(barreraEmpleados)
@@ -846,7 +846,46 @@ En un vacunatorio hay un empleado de salud para vacunar a 50 personas. El emplea
 Nota: todos los procesos deben terminar su ejecución; asegurarse de no realizar Busy Waiting; suponga que el empleado tienen una función VacunarPersona() que simula que el empleado está vacunando a UNA persona.
 
 ```c
+sem personasALaVez=5;
+sem barrera5=0;
+int contador=0;
+cola personas;
+sem mutexPersona=1;
+sem despierto=0;
+array esperaASerVacunado = ([50] 0);
 
+Process Personas [id=0..49]
+{
+	P(mutexPersona)
+	personas.push(id);
+	contador = contador + 1;
+	if (contador == 5)
+	{
+		contador=0;
+		V(despierto)
+	}
+	V(mutexPersona)
+	P(esperaASerVacunado[id])
+}
 
+Process Empleado
+{
+	cola Vacunados;
+	int id;
+	for z = 0 to 9//si hago esto 10 veces, atiendo 10 veces a 5 pacientes por lo tanto atendi a todos.
+	{
+		P(despierto)
+		for i= 0 to 4
+		{
+			id=personas.pop();
+			VacunarPersona(id);
+			Vacunados.push(id);//pusheo ids de vacunados.
+		}
+		for j= 0 to 4
+		{
+			V(esperaASerVacunado[Vacunados.pop()]);
+		}
+	}
+}
 
 ```
