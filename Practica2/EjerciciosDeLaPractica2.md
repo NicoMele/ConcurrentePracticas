@@ -896,11 +896,64 @@ Simular la atención en una Terminal de Micros que posee 3 puestos para hisopar 
 pasajeros. En cada puesto hay una Enfermera que atiende a los pasajeros de acuerdo
 con el orden de llegada al mismo. Cuando llega un pasajero se dirige al puesto que tenga
 menos gente esperando. Espera a que la enfermera correspondiente lo llame para
-hisoparlo, y luego se retira. Nota: sólo deben usar procesos Pasajero y Enfermera.
+hisoparlo, y luego se retira.
+
+Nota: sólo deben usar procesos Pasajero y Enfermera.
 Además, suponer que existe una función Hisopar() que simula la atención del pasajero por
 parte de la enfermera correspondiente.
 
 ```c
 
+sem esperan[3] = ([150] 0);
+
+sem mutex=1;
+
+sem lleganAlPuesto[3]=([3] 0);
+
+cola colaDePuestos[3]; //Array de colas.
+
+int hisopados=0;
+sem mutexHisopado=1;
+
+Process Pasajero [idPasajero=0..149]
+{
+	int puesto;
+	P(mutex)
+	puesto= chequearPuestoConMenosPersonas(colaDePuestos);//devuelve el indice del array que tiene menos personas.
+	colaDePuestos[puesto].push(idPasajero);// pusheo dependiendo el numero de puesto en una cola u otra
+	V(mutex)
+	V(lleganAlPuesto[puesto])
+	P(esperan[idPasajero])
+	//estas siendo hispado
+
+}
+
+Process Enfermera [idEnfermera=0..2]
+{
+	int idPasajero;
+	int i;
+	while(hisopados < 150)
+	{
+		P(lleganAlPuesto[idEnfermera])
+		if(!colaDePuestos.isEmpty())
+		{
+			P(mutex)
+			idPasajero=colaDePuestos[idEnfermera].pop();
+			V(mutex)
+			Hisopar(idPasajero);
+			V(esperan[idPasajero])
+			P(mutexHisopado)
+			hisopados++;
+			if (hisopados == 150)
+			{
+				for(i= 0 to 2)
+				{
+					V(lleganAlPuesto[i])
+				}
+			}
+			V(mutexHisopado)
+		}
+	}
+}
 
 ```
