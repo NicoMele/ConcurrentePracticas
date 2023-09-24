@@ -930,19 +930,29 @@ Process Pasajero [idPasajero=0..149]
 
 Process Enfermera [idEnfermera=0..2]
 {
-	int i;
 	int idPasajero;
+	int i;
 	while(hisopados < 150)
 	{
 		P(lleganAlPuesto[idEnfermera])
-		P(mutex)
-		idPasajero=colaDePuestos[idEnfermera].pop();
-		V(mutex)
-		Hisopar(idPasajero);
-		V(esperan[idPasajero])
-		P(mutexHisopado)
-		hisopados++;
-		V(mutexHisopado)
+		if(!colaDePuestos.isEmpty())
+		{
+			P(mutex)
+			idPasajero=colaDePuestos[idEnfermera].pop();
+			V(mutex)
+			Hisopar(idPasajero);
+			V(esperan[idPasajero])
+			P(mutexHisopado)
+			hisopados++;
+			if (hisopados == 150)
+			{
+				for(i= 0 to 2)
+				{
+					V(lleganAlPuesto[i])
+				}
+			}
+			V(mutexHisopado)
+		}
 	}
 }
 
