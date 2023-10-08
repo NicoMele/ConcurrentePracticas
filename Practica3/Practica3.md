@@ -106,6 +106,8 @@ Process Usuario [u:1..N]{
 }
 ```
 
-```
+## Ejercicio 3
+
+```c
 
 ```
