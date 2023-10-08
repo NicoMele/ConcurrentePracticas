@@ -125,5 +125,188 @@ Existen N personas que deben fotocopiar un documento. La fotocopiadora sólo pue
   a la persona cuál fotocopiadora usar y cuándo hacerlo.
 
 ```c
+a)
+Monitor Fotocopiadora
+{
+    Procedure sacarFotocopia(){
+        fotocopiar();// la impresora esta fotocopiando
+    }
+}
+
+process Persona [id:0..N-1]
+{
+    Fotocopiadora.sacarFotocopia();
+}
+
+b)
+Monitor Fotocopiadora{
+    cond espera;
+    int cant = 0;
+    int cantEsperan = 0;
+
+    Procedure fotocopiar(){
+        if(cant == 1 ){
+            cantEsperan++;
+            wait(espera);
+        }
+        else{
+            cant++;
+        }
+
+         Fotocopiar();
+    }
+    Procedure terminarFotocopiar(){
+        if (cantEsperan > 0){
+            cantEsperan--;
+            signal(espera);
+        }
+        else{
+            cant--;
+        }
+    }
+}
+
+
+Process Persona [u:1..N-1]{
+    Fotocopiadora.fotocopiar();
+    Fotocopiadora.terminarFotocopiar();
+}
+
+c)
+Monitor Fotocopiadora{
+    cond espera [];
+    int cant = 0;
+    colaOrdenada cola;
+
+    Procedure fotocopiar(int idPersona, int edad){
+
+        if(cant == 1 ){
+            cola.push(idPersona,edad)//se pushea ordenado de menor a mayor
+            wait(espera[id]);
+        }
+        else{
+            cant++;
+        }
+        Fotocopiar();
+    }
+    Procedure terminarFotocopiar(){
+        if (!cola.isEmpty()){
+            pop.cola(id,edad);
+            signal(espera[id]);
+        }
+        else{
+            cant--;
+        }
+    }
+}
+
+
+Process Persona [id:1..N-1]{
+    int edad;
+    edad=Persona.edad();//obtengo edad.
+
+    Fotocopiadora.fotocopiar(u,edad);
+    Fotocopiadora.terminarFotocopiar();
+}
+
+d)
+
+Monitor Fotocopiadora
+{
+    cond espera[];
+    cond llego[];
+    int cant = 0;
+
+
+    Procedure fotocopiar(int id)
+    {
+        //signal(llego[id]);// esto se hace para que el terminaroFotocopiar solo haga un signal si hay alguien esperando en wait espera
+        if(id != 0 )
+        {
+            wait(espera[id]);
+        }
+
+    }
+
+    Procedure terminarFotocopiar(int idPersona)
+    {
+
+        signal(espera[idPersona++])
+    }
+}
+
+
+Process Persona [id:0..N-1]{
+    Fotocopiadora.fotocopiar(id);
+    //FOTOCOPIAR
+    Fotocopiadora.terminarFotocopiar(id);
+}
+
+e)
+cond esperandoPersonas[];
+cola Personas[N-1];
+cond esperoAqueLLegueAlguien;
+bool llegue;
+
+Monitor Fotocopiadora{
+    cond espera;
+    int cant = 0;
+    int cantEsperan = 0;
+
+    Procedure fotocopiar(){
+        if(cant == 1 ){
+            cantEsperan++;
+            wait(espera);
+        }
+        else{
+            cant++;
+        }
+
+    }
+    Procedure terminarFotocopiar(){
+        if (cantEsperan > 0){
+            cantEsperan--;
+            signal(espera);
+        }
+        else{
+            cant--;
+        }
+    }
+}
+Monitor personaLlega
+{
+    procedure llegueAFotocopiar(int id)
+    {
+        llegue=true;
+        Personas.push(id);
+        signal(esperoAqueLLegueAlguien)
+        wait(esperandoPersonas[id]);
+    }
+
+}
+
+Process Persona [u:1..N-1]
+{
+    personaLlega.llegueAFotocopiar(u);
+    Fotocopiadora.fotocopiar();
+    //fotocopiar
+    Fotocopiadora.terminarFotocopiar();
+}
+
+Process Empleado
+{
+    while (true)
+    {
+        if(!llegue)
+        {
+            wait(esperoAqueLLegueAlguien)
+            llegue=false;
+        }
+        if(!Personas.isEmpty())
+        {
+            signal[Personas.pop(id)]
+        }
+    }
+}
 
 ```
