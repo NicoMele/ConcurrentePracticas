@@ -75,6 +75,35 @@ Process Auto [a:1..M]{
 
 c. No, no lo respeta, ya que cuando un auto se despierta, pasa a competir con el resto de autos para pasar al puente. La b. tampoco lo respeta ya que todos los autos van a competir por el uso del monitor.
 
-```
+`````
 
+## Ejercicio 2
+````c
+Se necesita un monitor base de datos que tengas dos procesos uno leer y otro terminar
+
+y un process de 1..n de Usuario
+
+`````
+
+```cpp
+Monitor BaseDeDatos{
+    cond espera;// variable condicion donde se quedan esperando los procesos
+    int cant = 0;
+    Procedure leer(){
+        while(cant > 4 ){// (0 1 2 3 4 osea 5 en total),si es mayor a cuatro quiere decir que es el 6 usuario, septimo o asi siguiendo.
+            wait(espera);
+        }
+        cant++;
+    }
+    Procedure terminarLectura(){
+        cant--;
+        signal(espera);// despierto a alguien si estaba esperando , sino hay nadie no pasa nada
+    }
+}
+
+Process Usuario [u:1..N]{
+    BaseDeDatos.leer();
+    //Leer
+    BaseDeDatos.terminarLectura();
+}
 ```
