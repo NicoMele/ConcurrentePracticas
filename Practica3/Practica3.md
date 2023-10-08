@@ -56,12 +56,11 @@ End Process;
 
 # Respuesta:
 
+a)El codigo tiene un error, suponete que viene 2 procesos a entrarPuente(); uno de los dos va a encontrar a cant en 0 y va a pasar y el otro se va a quedar dormido en el wait cola , el proceso 1 cruza el puente y sale, dejando a cant en 0 y avisandole al que estaba en la cola q ya puede pasar, pero que pasaria si antes de que el que estaba en la cola se de cuenta q puede pasar llega otro proceso? va a encontrar a cant en 0 y NO se va a dormir va a pasar y va a empezar a cruzar el puente, y ponele que en ese momento justo el que estaba en wait se despierta ? va a pasar a cruzar el puente , y van a estar los dos cruzando.
+
+b) Si, se puede simplificar haciendo que el monitor represente el cruce del puente. Esto se debe a que solo se necesita exclusion mutua y esto de por si lo proveen los monitores.
+
 ```c
-    a)El codigo tiene un error, suponete que viene  2 procesos  a entrarPuente(); uno de los dos va a encontrar a cant en 0 y va a pasar y el otro se va a quedar dormido en el wait cola , el proceso 1 cruza el puente y sale, dejando a cant en 0 y avisandole al que estaba en la cola q ya puede pasar, pero que pasaria si antes de que el que estaba en la cola se de cuenta q puede pasar llega otro proceso? va a encontrar a cant en 0 y NO se va a dormir va a pasar y va a empezar a cruzar el puente, y ponele que en ese momento justo el que estaba en wait se despierta ? va a pasar a cruzar el puente , y van a estar los dos cruzando.
-
-    b) Si, se puede simplificar haciendo que el monitor represente el cruce del puente. Esto se debe a que solo se necesita exclusion mutua y esto de por si lo proveen los monitores.
-
-
 Monitor Puente {
     Procedure cruzarPuente (){
         //el auto cruza el puente
@@ -72,9 +71,9 @@ Process Auto [a:1..M]{
     Puente.cruzarPuente();
 }
 
-c) No, no lo respeta, ya que cuando un auto se despierta, pasa a competir con el resto de autos para pasar al puente. La b. tampoco lo respeta ya que todos los autos van a competir por el uso del monitor.
-
 ```
+
+c) No, no lo respeta, ya que cuando un auto se despierta, pasa a competir con el resto de autos para pasar al puente. La b. tampoco lo respeta ya que todos los autos van a competir por el uso del monitor.
 
 ## Ejercicio 2
 
