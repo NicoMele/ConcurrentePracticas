@@ -78,6 +78,8 @@ c) No, no lo respeta, ya que cuando un auto se despierta, pasa a competir con el
 
 ## Ejercicio 2
 
+Existen N procesos que deben leer información de una base de datos, la cual es administrada por un motor que admite una cantidad limitada de consultas simultáneas.
+
 ```c
 
 a)Se necesita un monitor base de datos que tengas dos procesos uno leer y otro terminar y un process de 1..n de Usuario
